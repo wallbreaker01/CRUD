@@ -31,21 +31,46 @@ const createTodo = asyncHandler(async (req, res) => {
 //@route GET /api/todos/:id
 //@access public
 const getTodo = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `get todos ${req.params.id} ` });
+  const todo = await Todo.findById(req.params.id);
+  if (!todo) {
+    res.status(404);
+    throw new Error("NO Todo");
+  }
+
+  res.status(200).json(todo);
 });
 
 //@desc update todos
 //@route PUT /api/todos/:id
 //@access public
 const updateTodo = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `update todos ${req.params.id} ` });
+  const todo = await Todo.findById(req.params.id);
+  if (!todo) {
+    res.status(404);
+    throw new Error("NO Todo");
+  }
+
+  const updatedTodo = await Todo.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    { new: true }
+  );
+
+
+  res.status(200).json(updatedTodo);
 });
 
 //@desc delete todos
 //@route DELETE /api/todos/:id
 //@access public
 const deleteTodo = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: `delete todos ${req.params.id} ` });
+  const todo = await Todo.findById(req.params.id);
+  if (!todo) {
+    res.status(404);
+    throw new Error("NO Todo");
+  }
+  await Todo.remove();
+  res.status(200).json(todo);
 });
 
 module.exports = {
