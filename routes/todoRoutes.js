@@ -8,6 +8,7 @@ const {
   deleteTodo,
 } = require("../controllers/todoController");
 
+router.use(validateToken);
 router.route("/").get(getTodos).post(createTodo);
 
 router.route("/:id").get(getTodo).put(updateTodo).delete(deleteTodo);
